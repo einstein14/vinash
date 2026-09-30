@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}{{ inbox_title }} — Vinash{% endblock %}
+
+{% block content %}
+<h1>{{ inbox_title }}</h1>
+<p class="tagline">{{ inbox_subtitle }}</p>
+
+{% if not inbox_view %}
+<p class="inbox-links">
+  <a href="/inbox?view=let_go">Let go</a>
+  <span class="meta-sep">·</span>
+  <a href="/inbox?view=resolved">Resolved</a>
+</p>
+{% else %}
+<p class="inbox-links"><a href="/inbox">Back to inbox</a></p>
+{% endif %}
+
+{% if thoughts %}
+<ul class="thought-list">
+  {% for thought in thoughts %}
+  <li class="thought-card">
+    <a class="thought-link" href="/thoughts/{{ thought.id }}">
+      <p class="thought-text">{{ thought.content }}</p>
+      <p class="thought-meta">
+        <span>{{ thought.created_label }}</span>
+        <span class="meta-sep">·</span>
+        <span>{{ thought.status_label }}</span>
+        {% if thought.category_label %}
+        <span class="meta-sep">·</span>
+        <span>{{ thought.category_label }}</span>
+        {% endif %}
+        {% if thought.revisit_label %}
+        <span class="meta-sep">·</span>
+        <span>Revisit {{ thought.revisit_label }}</span>
+        {% endif %}
+      </p>
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p class="empty-state">
+  {% if inbox_view %}
+  Nothing here.
+  {% else %}
+  Nothing here yet. <a href="/">Write something down</a> when it is on your mind.
+  {% endif %}
+</p>
+{% endif %}
+{% endblock %}

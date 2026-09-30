@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Reflection — Vinash{% endblock %}
+
+{% block content %}
+<h1>Reflection</h1>
+<p class="tagline">This week · {{ week_label }}</p>
+<p class="reflection-note">Simple counts from what you saved. Not a diagnosis or a score.</p>
+
+<ul class="reflection-stats">
+  <li>
+    <span class="stat-value">{{ stats.captured }}</span>
+    <span class="stat-label">thoughts captured</span>
+  </li>
+  <li>
+    <span class="stat-value">{{ stats.converted_to_actions }}</span>
+    <span class="stat-label">turned into actions</span>
+  </li>
+  <li>
+    <span class="stat-value">{{ stats.completed }}</span>
+    <span class="stat-label">actions completed</span>
+  </li>
+  <li>
+    <span class="stat-value">{{ stats.let_go }}</span>
+    <span class="stat-label">marked let go</span>
+  </li>
+  <li>
+    <span class="stat-value">{{ stats.waiting_revisit }}</span>
+    <span class="stat-label">waiting to revisit</span>
+  </li>
+</ul>
+
+{% if category_lines %}
+<section class="reflection-categories">
+  <h2 class="reflection-heading">By category</h2>
+  <p class="reflection-note">Only thoughts you chose to label.</p>
+  <ul class="category-stats">
+    {% for line in category_lines %}
+    <li>You captured {{ line.count }} thought{% if line.count != 1 %}s{% endif %} related to {{ line.label | lower }} this week.</li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+{% endblock %}

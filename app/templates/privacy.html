@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy — Vinash{% endblock %}
+
+{% block content %}
+<h1>Your data in this browser</h1>
+<p class="tagline">Vinash does not use accounts. Thoughts you save here are tied to a random ID in a cookie on this device.</p>
+
+{% if error_message %}
+<p class="form-error" role="alert">{{ error_message }}</p>
+{% endif %}
+
+<form class="privacy-delete" action="/privacy/delete-all" method="post">
+  <p>Delete everything you saved in <strong>this browser</strong>. This cannot be undone.</p>
+  <label class="checkbox-row">
+    <input type="checkbox" name="confirm" value="yes" required>
+    I understand this will permanently delete my thoughts here.
+  </label>
+  <button type="submit" class="secondary">Delete all my thoughts</button>
+</form>
+
+<p class="inbox-links"><a href="/">Back to home</a></p>
+{% endblock %}

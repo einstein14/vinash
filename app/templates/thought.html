@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Thought — Vinash{% endblock %}
+
+{% block content %}
+<p class="back-link"><a href="/inbox">← Inbox</a></p>
+
+<article class="thought-detail">
+  <p class="thought-text">{{ thought.content }}</p>
+  <p class="thought-meta">
+    <span>{{ thought.created_label }}</span>
+    <span class="meta-sep">·</span>
+    <span>{{ thought.status_label }}</span>
+    {% if thought.category_label %}
+    <span class="meta-sep">·</span>
+    <span>{{ thought.category_label }}</span>
+    {% endif %}
+    {% if thought.revisit_label %}
+    <span class="meta-sep">·</span>
+    <span>Revisit {{ thought.revisit_label }}</span>
+    {% endif %}
+  </p>
+</article>
+
+<form class="category-form" action="/thoughts/{{ thought.id }}/category" method="post">
+  <label for="category">Category <span class="optional">(optional)</span></label>
+  <div class="field-row">
+    <select id="category" name="category">
+      <option value="">None</option>
+      {% for option in categories %}
+      <option value="{{ option.value }}" {% if thought.category == option.value %}selected{% endif %}>{{ option.label }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="secondary">Save</button>
+  </div>
+</form>
+
+{% if error_message %}
+<p class="form-error" role="alert">{{ error_message }}</p>
+{% endif %}
+
+<section class="choices">
+  <h2 class="choices-heading">What would you like to do with this?</h2>
+
+  <div class="choice-card">
+    <h3>Action</h3>
+    <p class="choice-hint">Something can be done about this.</p>
+    <form action="/thoughts/{{ thought.id }}/action" method="post">
+      <label for="action_text">What's the smallest next step?</label>
+      <input id="action_text" name="action_text" type="text" value="{{ thought.action_text }}" placeholder="Review 5 interview questions.">
+      <button type="submit" class="secondary">Save action</button>
+    </form>
+  </div>
+
+  <div class="choice-card">
+    <h3>Revisit</h3>
+    <p class="choice-hint">Not right now. Pick when to see it again.</p>
+    <form action="/thoughts/{{ thought.id }}/revisit" method="post" class="revisit-form">
+      <fieldset class="revisit-options">
+        <legend class="visually-hidden">When to revisit</legend>
+        <label class="radio-row"><input type="radio" name="preset" value="tomorrow" checked> Tomorrow</label>
+        <label class="radio-row"><input type="radio" name="preset" value="weekend"> This weekend</label>
+        <label class="radio-row"><input type="radio" name="preset" value="next_week"> Next week</label>
+        <label class="radio-row"><input type="radio" name="preset" value="custom"> Custom date</label>
+      </fieldset>
+      <label for="custom_date">Custom date</label>
+      <input id="custom_date" name="custom_date" type="date" min="{{ today_iso }}">
+      <button type="submit" class="secondary">Revisit later</button>
+    </form>
+  </div>
+
+  <div class="choice-card choice-row">
+    <div>
+      <h3>Keep</h3>
+      <p class="choice-hint">Keep it for reference.</p>
+    </div>
+    <form action="/thoughts/{{ thought.id }}/keep" method="post">
+      <button type="submit" class="secondary">Keep</button>
+    </form>
+  </div>
+
+  <div class="choice-card choice-row">
+    <div>
+      <h3>Let go</h3>
+      <p class="choice-hint">You do not need to act on this.</p>
+    </div>
+    <form action="/thoughts/{{ thought.id }}/let-go" method="post">
+      <button type="submit" class="secondary">Let go</button>
+    </form>
+  </div>
+</section>
+
+<form class="resolve-form" action="/thoughts/{{ thought.id }}/resolve" method="post">
+  <button type="submit" class="text-button">Mark resolved</button>
+</form>
+{% endblock %}

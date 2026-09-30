@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Vinash</h1>
+<p class="tagline">Get it out of your head.</p>
+
+<form class="capture" action="/thoughts" method="post">
+  <label class="capture-label" for="content">What's on your mind?</label>
+  {% if error_message %}
+  <p class="form-error" role="alert">{{ error_message }}</p>
+  {% endif %}
+  <textarea id="content" name="content" rows="8" placeholder="I need to prepare for my interview. I haven't called Mom. I'm worried about the bills…" autofocus></textarea>
+  <button type="submit" class="primary">Empty My Mind</button>
+</form>
+{% endblock %}

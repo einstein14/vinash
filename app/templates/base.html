@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Vinash{% endblock %}</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="wrap">
+    <nav>
+      <a href="/" {% if current_path == "/" %}aria-current="page"{% endif %}>Home</a>
+      <a href="/inbox" {% if current_path == "/inbox" %}aria-current="page"{% endif %}>Inbox</a>
+      <a href="/actions" {% if current_path == "/actions" %}aria-current="page"{% endif %}>Actions</a>
+      <a href="/revisit" {% if current_path == "/revisit" %}aria-current="page"{% endif %}>Revisit</a>
+      <a href="/reflection" {% if current_path == "/reflection" %}aria-current="page"{% endif %}>Reflection</a>
+    </nav>
+
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+      Vinash is a personal reflection tool for getting thoughts out of your head.
+      It does not provide medical, psychological, or therapeutic advice.
+      <span class="meta-sep">·</span>
+      <a href="/privacy">Privacy</a>
+    </footer>
+  </div>
+  <script src="/static/js/main.js"></script>
+</body>
+</html>

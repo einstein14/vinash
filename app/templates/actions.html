@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Actions — Vinash{% endblock %}
+
+{% block content %}
+<h1>Actions</h1>
+<p class="tagline">Small next steps you chose to take.</p>
+
+{% if action_items %}
+<ul class="action-list">
+  {% for item in action_items %}
+  <li class="action-card">
+    <p class="action-thought-label">From your thought</p>
+    <p class="thought-text">{{ item.thought_content }}</p>
+    <p class="action-step">{{ item.action_text }}</p>
+    <div class="action-footer">
+      <p class="thought-meta">Added {{ item.created_label }}</p>
+      <form class="complete-form" method="post" action="/actions/{{ item.action_id }}/complete">
+        <label class="complete-label">
+          <input type="checkbox" class="complete-checkbox" aria-label="Mark this step complete">
+          <span>Complete</span>
+        </label>
+      </form>
+    </div>
+    <p class="action-link"><a href="/thoughts/{{ item.thought_id }}">Open thought</a></p>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p class="empty-state">No open actions. When something needs a step, you can add one from a thought in your <a href="/inbox">inbox</a>.</p>
+{% endif %}
+{% endblock %}

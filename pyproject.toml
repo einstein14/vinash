@@ -1,0 +1,31 @@
+[project]
+name = "vinash"
+version = "0.1.0"
+description = "Vinash — get it out of your head."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi[standard]==0.142.0",
+    "jinja2==3.1.6",
+    "python-multipart==0.0.20",
+    "sqlalchemy==2.0.43",
+    "psycopg[binary]==3.2.10",
+    "alembic==1.16.5",
+    "python-dotenv==1.1.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==8.4.2",
+    "httpx==0.28.1",
+]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.fastapi]
+entrypoint = "app.main:app"

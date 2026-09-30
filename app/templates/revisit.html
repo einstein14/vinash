@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Revisit — Vinash{% endblock %}
+
+{% block content %}
+<h1>Revisit</h1>
+<p class="tagline">Thoughts you set aside for another day.</p>
+
+{% if error_message %}
+<p class="form-error" role="alert">{{ error_message }}</p>
+{% endif %}
+
+{% if revisit_thoughts %}
+<ul class="revisit-list">
+  {% for thought in revisit_thoughts %}
+  <li class="revisit-card">
+    <p class="thought-text">{{ thought.content }}</p>
+    <p class="thought-meta">
+      <span>Revisit {{ thought.revisit_label }}</span>
+      <span class="meta-sep">·</span>
+      <span>Captured {{ thought.created_label }}</span>
+    </p>
+
+    <div class="revisit-actions">
+      <form method="post" action="/thoughts/{{ thought.id }}/revisit-now">
+        <button type="submit" class="secondary">Revisit now</button>
+      </form>
+
+      <details class="postpone-details">
+        <summary>Postpone again</summary>
+        <form action="/thoughts/{{ thought.id }}/revisit" method="post" class="revisit-form">
+          <input type="hidden" name="return_to" value="revisit">
+          <fieldset class="revisit-options">
+            <legend class="visually-hidden">When to revisit</legend>
+            <label class="radio-row"><input type="radio" name="preset" value="tomorrow" checked> Tomorrow</label>
+            <label class="radio-row"><input type="radio" name="preset" value="weekend"> This weekend</label>
+            <label class="radio-row"><input type="radio" name="preset" value="next_week"> Next week</label>
+            <label class="radio-row"><input type="radio" name="preset" value="custom"> Custom date</label>
+          </fieldset>
+          <label for="custom_date_{{ thought.id }}">Custom date</label>
+          <input id="custom_date_{{ thought.id }}" name="custom_date" type="date" min="{{ today_iso }}">
+          <button type="submit" class="secondary">Save new date</button>
+        </form>
+      </details>
+
+      <form method="post" action="/thoughts/{{ thought.id }}/resolve">
+        <input type="hidden" name="return_to" value="revisit">
+        <button type="submit" class="text-button">Mark resolved</button>
+      </form>
+
+      <form method="post" action="/thoughts/{{ thought.id }}/let-go">
+        <input type="hidden" name="return_to" value="revisit">
+        <button type="submit" class="text-button">Let go</button>
+      </form>
+    </div>
+
+    <p class="action-link"><a href="/thoughts/{{ thought.id }}">Open thought</a></p>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p class="empty-state">Nothing waiting. When you need space, you can <a href="/inbox">revisit a thought later</a> from your inbox.</p>
+{% endif %}
+{% endblock %}
